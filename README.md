@@ -42,3 +42,33 @@ print(df.head())
 ```
 
 This will return a `pandas.DataFrame` containing the data stored in the specified Delta Lake table or Parquet file.
+
+# Azure SQL Connector
+
+This connector allows querying data from Azure SQL Database using `pyodbc`.
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+pip install pyodbc pandas
+```
+
+## Usage
+
+```python
+from azure_sql_connector import AzureSQLConfig, AzureSQLConnector
+
+config = AzureSQLConfig(
+    server="<server>.database.windows.net",
+    database="<database>",
+    user="<username>",  # omit for Managed Identity
+    password="<password>",  # omit for Managed Identity
+)
+
+connector = AzureSQLConnector(config)
+
+df = connector.query("SELECT * FROM mytable")
+print(df.head())
+```
