@@ -72,3 +72,35 @@ connector = AzureSQLConnector(config)
 df = connector.query("SELECT * FROM mytable")
 print(df.head())
 ```
+
+# Data Retriever
+
+The `DataRetriever` class provides a single interface for retrieving data from either ADLS or Azure SQL based on a configuration.
+
+```python
+from data_retriever import DataRetriever, RetrieverConfig
+from adls_delta_connector import ADLSConfig
+from azure_sql_connector import AzureSQLConfig
+
+# Example for ADLS
+adls_cfg = ADLSConfig(
+    account_name="<storage-account>",
+    filesystem="<filesystem>",
+    path="path/to/table",
+)
+retriever = DataRetriever(RetrieverConfig(source_type="adls", adls_config=adls_cfg))
+
+adls_df = retriever.retrieve()
+
+# Example for Azure SQL
+sql_cfg = AzureSQLConfig(
+    server="<server>.database.windows.net",
+    database="<database>",
+)
+retriever = DataRetriever(RetrieverConfig(source_type="sql", sql_config=sql_cfg))
+
+sql_df = retriever.retrieve("SELECT * FROM mytable")
+```
+
+This will return a `pandas.DataFrame` with the results from the chosen source.
+
